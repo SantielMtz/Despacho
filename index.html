@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Grupo Gamez | Despacho de Abogados</title>
+  <!-- Montserrat y Open Sans desde Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --azul-metalico: #1A2636;
+      --dorado: #C9A86A;
+      --gris-grafito: #23272A;
+      --blanco: #fff;
+    }
+    body {
+      margin: 0;
+      font-family: 'Open Sans', Arial, sans-serif;
+      background: var(--azul-metalico);
+      color: var(--blanco);
+      padding-top: 70px;
+    }
+    /* Barra de navegación fija y transparente al inicio */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem 2rem;
+      background: transparent;
+      transition: background 0.5s ease, transform 0.4s cubic-bezier(.4,0,.2,1);
+      z-index: 100;
+      opacity: 0;
+      animation: fadeInNav 1.2s ease forwards;
+      box-shadow: none;
+      /* Nuevo: transición para deslizar */
+      transform: translateY(0);
+    }
+    @keyframes fadeInNav {
+      to { opacity: 1; }
+    }
+    /* Estado final: fondo azul metálico al hacer scroll */
+    .navbar.scrolled {
+      background: var(--azul-metalico);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      /* Nuevo: desliza el navbar hacia arriba unos px */
+      transform: translateY(-8px);
+    }
+    .navbar-logo {
+      height: 62px;
+      margin-right: 2rem;
+      transition: transform 0.3s;
+      /* Nuevo: fija el logo a la izquierda */
+      flex-shrink: 0;
+    }
+    .navbar-logo:hover {
+      transform: scale(1.05);
+    }
+    .navbar-content {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      /* Nuevo: logo a la izquierda, links centrados, contacto a la derecha */
+      justify-content: flex-start;
+    }
+    .navbar-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+    .navbar-link {
+      color: var(--blanco);
+      text-decoration: none;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+      position: relative;
+      padding: 0.5rem 0.8rem;
+    }
+    .navbar-link::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 2px;
+      background: var(--dorado);
+      transition: width 0.3s;
+      position: absolute;
+      left: 0; bottom: -4px;
+    }
+    .navbar-link:hover::after {
+      width: 100%;
+    }
+    .navbar-link:hover {
+      color: var(--dorado);
+    }
+    .navbar-contact {
+      margin-left: 2rem;
+      background: var(--dorado);
+      color: var(--azul-metalico) !important;
+      border-radius: 30px;
+      padding: 0.5rem 1.5rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      box-shadow: none;
+      transition: box-shadow 0.3s, background 0.2s, color 0.2s;
+      border: none;
+      display: inline-block;
+      position: relative;
+    }
+    .navbar-contact:hover {
+      background: var(--azul-metalico);
+      color: var(--dorado) !important;
+      box-shadow: 0 4px 16px rgba(201,168,106,0.5);
+    }
+    @media (max-width: 900px) {
+      .navbar-content { flex-direction: column; align-items: flex-start; }
+      .navbar-links { flex-direction: column; gap: 1rem; }
+      .navbar-logo { margin-bottom: 1rem; }
+      .navbar-contact { margin-left: 0; margin-top: 1rem; }
+    }
+    header {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--azul-metalico);
+      overflow: hidden;
+    }
+    .hero-video {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.25;
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    .hero-title {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 2.5rem;
+      color: var(--dorado);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .hero-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: var(--blanco);
+    }
+    .cta-btn {
+      background: var(--dorado);
+      color: var(--azul-metalico);
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+    .cta-btn:hover {
+      background: #b08a4a;
+    }
+    .services {
+      display: flex;
+      justify-content: space-around;
+      background: var(--gris-grafito);
+      padding: 3rem 0;
+      flex-wrap: wrap;
+    }
+    .service-item {
+      flex: 1 1 200px;
+      max-width: 250px;
+      margin: 1rem;
+      text-align: center;
+      color: var(--blanco);
+    }
+    .service-icon {
+      font-size: 2.5rem;
+      color: var(--dorado); /* Cambia el color a dorado corporativo */
+      margin-bottom: 1rem;
+      /* Puedes agregar un sutil efecto de sombra para resaltar */
+      text-shadow: 0 2px 8px rgba(26,38,54,0.15);
+    }
+    .about {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--azul-metalico);
+      padding: 3rem 0;
+      flex-wrap: wrap;
+    }
+    .about-text {
+      flex: 1 1 300px;
+      max-width: 500px;
+      margin-right: 2rem;
+      font-size: 1.1rem;
+      color: var(--blanco);
+    }
+    .about-img {
+      flex: 1 1 200px;
+      max-width: 300px;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .credibility {
+      background: var(--gris-grafito);
+      padding: 2rem 0;
+      text-align: center;
+    }
+    .cred-logos img {
+      height: 40px;
+      margin: 0 1rem;
+      filter: grayscale(1) brightness(1.2);
+      opacity: 0.8;
+      vertical-align: middle;
+    }
+    .final-cta {
+      background: var(--azul-metalico);
+      color: var(--dorado);
+      text-align: center;
+      padding: 2.5rem 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.5rem;
+    }
+    .final-cta .cta-btn {
+      margin-top: 1.5rem;
+    }
+    /* Estilos generales para la página de ejemplo */
+    /* Barra de navegación fija y transparente al inicio */
+    /* Estado final: fondo negro sólido */
+    /* Contenido de la barra de navegación */
+    /* Banner de bienvenida para demostrar el efecto */
+    .hero {
+      height: 400px;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 0 2px 8px #000;
+    }
+     /* Footer */
+        footer {
+            background: var(--gris-grafito);
+            color: var(--blanco);
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: var(--dorado);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-col ul li a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-col ul li a:hover {
+            color: var(--dorado);
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+            color: var(--dorado);
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+        .social-link:hover {
+            background: var(--dorado);
+            color: var(--azul-metalico);
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+    /* Contenido adicional para permitir el scroll */
+    .main-content {
+      padding: 2rem;
+      background: #f4f4f4;
+      min-height: 1200px;
+    }
+
+    /* Casos de éxito grid y cards mejorados */
+.exito-grid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 2rem auto;
+}
+.exito-card {
+  background: rgba(35,39,42,0.7);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  width: 320px;
+  min-width: 260px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s;
+  box-sizing: border-box;
+}
+.exito-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.exito-card h4 {
+  color: var(--dorado);
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+.exito-card p {
+  font-size: 1rem;
+  color: var(--blanco);
+  margin-bottom: 0;
+}
+
+/* Carrusel de logos */
+.carousel-container {
+  width: 100%;
+  overflow: hidden;
+  padding: 2rem 0;
+  background: var(--gris-grafito);
+  position: relative;
+}
+.carousel-track {
+  display: flex;
+  gap: 3rem;
+  /* El ancho es dinámico por duplicar logos */
+  will-change: transform;
+}
+.carousel-logo {
+  flex: 0 0 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  transition: transform 0.3s, filter 0.3s, opacity 0.3s;
+  filter: grayscale(1) brightness(1.2);
+  opacity: 0.7;
+  cursor: pointer;
+}
+.carousel-logo img {
+  max-height: 60px;
+  max-width: 120px;
+  transition: filter 0.3s, transform 0.3s;
+}
+.carousel-logo:hover {
+  transform: scale(1.15);
+  filter: none;
+  opacity: 1;
+}
+.carousel-logo:hover img {
+  filter: none;
+}
+@media (max-width: 900px) {
+  .carousel-track { gap: 2rem; }
+  .carousel-logo { flex: 0 0 100px; height: 60px; }
+}
+
+/* Menú hamburguesa para móvil */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--dorado);
+  cursor: pointer;
+  margin-right: 1rem;
+  z-index: 101;
+}
+@media (max-width: 900px) {
+  .navbar-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100vw;
+    padding-right: 1rem;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .navbar-links {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100vw;
+    background: var(--azul-metalico);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 1rem 2rem;
+    display: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    z-index: 100;
+  }
+  .navbar-links.open {
+    display: flex;
+  }
+  .navbar-link {
+    width: 100%;
+    padding: 1rem 0;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .navbar-logo {
+    margin-bottom: 0;
+    margin-right: 0.5rem;
+  }
+  .navbar-contact {
+    margin-left: 0;
+    margin-top: 1rem;
+    width: 100%;
+    text-align: left;
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-content">
+      <img src="Grupo (1).gif" alt="Grupo Gamez Logo" class="navbar-logo">
+      <button class="menu-toggle" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="navbar-links" id="navbar-links">
+        <a href="#" class="navbar-link">Inicio</a>
+        <a href="#" class="navbar-link">Servicios</a>
+        <a href="#" class="navbar-link">Sobre Nosotros</a>
+        <a href="#" class="navbar-link">Nuestro Equipo</a>
+        <a href="#" class="navbar-contact">Contacto</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header>
+    <video class="hero-video" autoplay muted loop>
+      <source src="Abogados.mp4" type="video/mp4">
+      <!-- Video de fondo sutil, reemplazar con el archivo real -->
+    </video>
+    <div class="hero-content">
+      <h1 class="hero-title">Tu tranquilidad legal, nuestra prioridad.</h1>
+      <p class="hero-subtitle">Soluciones jurídicas precisas y efectivas para tus retos legales.</p>
+      <button class="cta-btn">Contáctanos</button>
+    </div>
+  </header>
+
+  <!-- ¿Por qué elegirnos a nosotros? -->
+  <section style="background:var(--gris-grafito);color:var(--blanco);padding:3rem 0;text-align:center;">
+    <h2 style="color:var(--dorado);font-family:'Montserrat',Arial,sans-serif;">¿Por qué elegirnos a nosotros?</h2>
+    <p style="max-width:700px;margin:1rem auto;font-size:1.15rem;">
+      En Grupo Gamez, nos distinguimos por nuestra atención personalizada, ética profesional y resultados comprobados. Nuestro equipo combina experiencia, innovación y compromiso para proteger tus intereses y resolver tus problemas legales de manera eficiente y transparente.
+    </p>
+    <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:2rem;">
+      <div style="flex:1 1 200px;max-width:250px;">
+        <span class="service-icon"><i class="fas fa-lock"></i></span>
+        <h4>Confidencialidad</h4>
+        <p>Tu información siempre segura y protegida.</p>
+      </div>
+      <div style="flex:1 1 200px;max-width:250px;">
+        <span class="service-icon"><i class="fas fa-chart-line"></i></span>
+        <h4>Resultados</h4>
+        <p>Soluciones legales efectivas y comprobadas.</p>
+      </div>
+      <div style="flex:1 1 200px;max-width:250px;">
+        <span class="service-icon"><i class="fas fa-award"></i></span>
+        <h4>Experiencia</h4>
+        <p>Más de 15 años resolviendo casos en México.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Misión y Visión -->
+  <section style="background:var(--azul-metalico);color:var(--blanco);padding:3rem 0;text-align:center;">
+    <h2 style="color:var(--dorado);font-family:'Montserrat',Arial,sans-serif;">Misión y Visión</h2>
+    <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;max-width:900px;margin:2rem auto;">
+      <div style="flex:1 1 300px;max-width:400px;">
+        <h4 style="color:var(--dorado);">Misión</h4>
+        <p>
+          Brindar asesoría y representación legal de excelencia, enfocada en la protección de los derechos e intereses de nuestros clientes, con ética, transparencia y profesionalismo.
+        </p>
+      </div>
+      <div style="flex:1 1 300px;max-width:400px;">
+        <h4 style="color:var(--dorado);">Visión</h4>
+        <p>
+          Ser el despacho de abogados líder en México, reconocido por nuestra innovación, resultados y compromiso social, generando confianza y tranquilidad en cada cliente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Servicios - Problemas legales más comunes en México -->
+  <section style="background:var(--gris-grafito);color:var(--blanco);padding:3rem 0;text-align:center;">
+    <h2 style="color:var(--dorado);font-family:'Montserrat',Arial,sans-serif;">Servicios</h2>
+    <p style="max-width:700px;margin:1rem auto;font-size:1.15rem;">
+      Atendemos los problemas legales más frecuentes que enfrentan las personas y empresas en México:
+    </p>
+    <div style="display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-top:2rem;">
+      <div style="flex:1 1 200px;max-width:250px;">
+        <span class="service-icon"><i class="fas fa-balance-scale"></i></span>
+        <h4>Divorcios y pensión alimenticia</h4>
+        <p>Asesoría y representación en procesos familiares.</p>
+      </div>
+      <div style="flex:1 1 200px;max-width:250px;">
+        <span class="service-icon"><i class="fas fa-file-signature"></i></span>
+        <h4>Herencias y sucesiones</h4>
+        <p>Solución de conflictos por bienes y testamentos.</p>
+      </div>
+      <div style="flex:1 1 200px;max-width:250px;">
+        <span class="service-icon"><i class="fas fa-briefcase"></i></span>
+        <h4>Despidos injustificados</h4>
+        <p>Defensa de derechos laborales y liquidaciones.</p>
+      </div>
+      <div style="flex:1 1 200px;max-width:250px;">
+        <span class="service-icon"><i class="fas fa-user-shield"></i></span>
+        <h4>Fraudes y delitos patrimoniales</h4>
+        <p>Protección ante fraudes, robos y extorsiones.</p>
+      </div>
+      <div style="flex:1 1 200px;max-width:250px;">
+        <span class="service-icon"><i class="fas fa-file-contract"></i></span>
+        <h4>Conflictos contractuales</h4>
+        <p>Solución de problemas con contratos y acuerdos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Casos de éxito -->
+  <section style="background:var(--azul-metalico);color:var(--blanco);padding:3rem 0;text-align:center;">
+    <h2 style="color:var(--dorado);font-family:'Montserrat',Arial,sans-serif;">Casos de Éxito</h2>
+    <div class="exito-grid">
+      <div class="exito-card">
+        <img src="https://images.pexels.com/photos/6266771/pexels-photo-6266771.jpeg" alt="Empresa protegida ante fraude">
+        <h4>Empresa protegida ante fraude</h4>
+        <p>
+          Logramos recuperar activos y proteger la reputación de una empresa nacional tras un caso de fraude corporativo.
+        </p>
+      </div>
+      <div class="exito-card">
+        <img src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?auto=format&fit=crop&w=600&q=80" alt="Familia reunida por herencia">
+        <h4>Familia reunida por herencia</h4>
+        <p>
+          Resolvimos un conflicto sucesorio complejo, garantizando la distribución justa de bienes y la unión familiar.
+        </p>
+      </div>
+      <div class="exito-card">
+        <img src="https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=600&q=80" alt="Defensa laboral exitosa">
+        <h4>Defensa laboral exitosa</h4>
+        <p>
+          Representamos a trabajadores en despidos injustificados, logrando indemnizaciones justas y reinstalaciones.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Credibilidad / Confianza -->
+  <section class="credibility">
+  <h2 style="color:var(--dorado);font-family:'Montserrat',Arial,sans-serif;text-align:center;">Empresas que confían en nosotros</h2>
+  <div class="carousel-container">
+    <div class="carousel-track" id="carousel-track">
+      <div class="carousel-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+      </div>
+      <div class="carousel-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon">
+      </div>
+      <div class="carousel-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google">
+      </div>
+      <div class="carousel-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM">
+      </div>
+      <div class="carousel-logo">
+        <img src="https://cdn.worldvectorlogo.com/logos/coca-cola-2021.svg" alt="Coca-Cola">
+      </div>
+      <div class="carousel-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+      </div>
+      <div class="carousel-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon">
+      </div>
+      <div class="carousel-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google">
+      </div>
+      <div class="carousel-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM">
+      </div>
+      <div class="carousel-logo">
+        <img src="https://cdn.worldvectorlogo.com/logos/coca-cola-2021.svg" alt="Coca-Cola">
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Llamada a la Acción Final -->
+  <section class="final-cta">
+    ¿Listo para resolver tus retos legales? Hablemos.
+    <br>
+    <button class="cta-btn">Contactar despacho</button>
+  </section>
+ <!-- Footer -->
+    <footer style="background: var(--gris-grafito); color: var(--blanco); padding: 60px 0 30px;">
+  <div style="max-width:1200px; margin:auto;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
+      <div>
+        <h3 style="color: var(--dorado); font-size: 20px; margin-bottom: 25px;">Grupo Gamez Abogados</h3>
+        <p>Despacho legal especializado en litigio, asesoría corporativa, derecho laboral y fiscal. Más de 15 años resolviendo casos con ética y profesionalismo.</p>
+        <div style="display: flex; gap: 15px; margin-top: 20px;">
+          <a href="#" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: var(--dorado); font-size: 1.5rem; text-decoration: none;">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: var(--dorado); font-size: 1.5rem; text-decoration: none;">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="#" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: var(--dorado); font-size: 1.5rem; text-decoration: none;">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h3 style="color: var(--dorado); font-size: 20px; margin-bottom: 25px;">Servicios</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li style="margin-bottom: 15px;"><a href="#" style="color: #aaa; text-decoration: none;">Litigio Civil y Mercantil</a></li>
+          <li style="margin-bottom: 15px;"><a href="#" style="color: #aaa; text-decoration: none;">Asesoría Corporativa</a></li>
+          <li style="margin-bottom: 15px;"><a href="#" style="color: #aaa; text-decoration: none;">Derecho Laboral</a></li>
+          <li style="margin-bottom: 15px;"><a href="#" style="color: #aaa; text-decoration: none;">Consultoría Fiscal</a></li>
+          <li style="margin-bottom: 15px;"><a href="#" style="color: #aaa; text-decoration: none;">Familia y Sucesiones</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color: var(--dorado); font-size: 20px; margin-bottom: 25px;">Enlaces Rápidos</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li style="margin-bottom: 15px;"><a href="#" style="color: #aaa; text-decoration: none;">Sobre Nosotros</a></li>
+          <li style="margin-bottom: 15px;"><a href="#" style="color: #aaa; text-decoration: none;">Casos de Éxito</a></li>
+          <li style="margin-bottom: 15px;"><a href="#" style="color: #aaa; text-decoration: none;">Blog Legal</a></li>
+          <li style="margin-bottom: 15px;"><a href="#" style="color: #aaa; text-decoration: none;">Preguntas Frecuentes</a></li>
+          <li style="margin-bottom: 15px;"><a href="#" style="color: #aaa; text-decoration: none;">Aviso de Privacidad</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color: var(--dorado); font-size: 20px; margin-bottom: 25px;">Contacto</h3>
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <i class="fas fa-map-marker-alt" style="color: var(--dorado);"></i>
+            <span>Av. Empresarial 123, Piso 4, Col. Centro, Guadalajara, Jalisco</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <i class="fas fa-phone-alt" style="color: var(--dorado);"></i>
+            <span>33-1234-5678</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <i class="fas fa-envelope" style="color: var(--dorado);"></i>
+            <span>contacto@grupogamez.com</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <i class="fas fa-clock" style="color: var(--dorado);"></i>
+            <span>Lunes a Viernes: 9:00 AM - 7:00 PM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); color: #aaa; font-size: 14px;">
+      &copy; 2025 Grupo Gamez Abogados. Todos los derechos reservados.
+    </div>
+  </div>
+</footer>
+<!-- Font Awesome para íconos sociales y contacto -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      // Si el usuario ha hecho scroll más de 40px desde arriba
+      if (window.scrollY > 40) {
+        navbar.classList.add('scrolled'); // Aplica fondo azul metálico
+      } else {
+        navbar.classList.remove('scrolled'); // Vuelve a fondo transparente
+      }
+    });
+
+    // Carrusel infinito con duplicación de logos
+  const track = document.getElementById('carousel-track');
+  let position = 0;
+  let originalWidth = null;
+
+  function setWidths() {
+    // Calcula el ancho de los logos originales (la mitad de los hijos)
+    const logos = track.children;
+    const logosCount = logos.length / 2;
+    let width = 0;
+    for (let i = 0; i < logosCount; i++) {
+      width += logos[i].offsetWidth;
+      // Suma el gap manualmente si lo necesitas (por ejemplo, 48px si gap: 3rem)
+      width += 48;
+    }
+    originalWidth = width;
+  }
+  window.addEventListener('resize', setWidths);
+  window.addEventListener('load', () => {
+    setWidths();
+    animateCarousel();
+  });
+
+  function animateCarousel() {
+    position -= 1;
+    if (Math.abs(position) >= originalWidth) {
+      position = 0;
+    }
+    track.style.transform = `translateX(${position}px)`;
+    requestAnimationFrame(animateCarousel);
+  }
+
+  // Menú hamburguesa para móvil
+  const menuToggle = document.getElementById('menu-toggle');
+  const navbarLinks = document.getElementById('navbar-links');
+  menuToggle.addEventListener('click', function() {
+    navbarLinks.classList.toggle('open');
+  });
+  </script>
+</body>
+</html>
