@@ -488,6 +488,21 @@
     text-align: left;
   }
 }
+@media (max-width: 600px) {
+  .hero-video {
+    height: 40vh !important; /* Limita la altura del video */
+    top: 50%;
+    transform: translateY(-50%);
+    object-fit: cover;
+  }
+  header {
+    height: 50vh !important; /* Reduce la altura del header */
+    min-height: 300px;
+  }
+  .hero-content {
+    padding-top: 2rem;
+  }
+}
   </style>
 </head>
 <body>
@@ -510,10 +525,10 @@
 
   <!-- Hero Section -->
   <header>
-    <video class="hero-video" autoplay muted loop poster="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80">
-      <source src="https://www.pexels.com/es-es/download/video/1826904/" type="video/mp4">
-      <!-- Si el video no carga, se muestra la imagen del atributo poster -->
-    </video>
+     <video class="hero-video" autoplay muted loop poster="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80">
+    <source src="https://www.pexels.com/es-es/download/video/6101152/" type="video/mp4">
+    <!-- Si el video no carga, se muestra la imagen del atributo poster -->
+  </video>
     <div class="hero-content">
       <h1 class="hero-title">Tu tranquilidad legal, nuestra prioridad.</h1>
       <p class="hero-subtitle">Soluciones jurídicas precisas y efectivas para tus retos legales.</p>
@@ -648,6 +663,7 @@
       <div class="carousel-logo">
         <img src="https://cdn.worldvectorlogo.com/logos/coca-cola-2021.svg" alt="Coca-Cola">
       </div>
+
       <div class="carousel-logo">
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
       </div>
@@ -756,34 +772,28 @@
     // Carrusel infinito con duplicación de logos
   const track = document.getElementById('carousel-track');
   let position = 0;
-  let originalWidth = null;
-
+  let trackWidth = null;
+  let halfWidth = null;
   function setWidths() {
-    // Calcula el ancho de los logos originales (la mitad de los hijos)
-    const logos = track.children;
-    const logosCount = logos.length / 2;
-    let width = 0;
-    for (let i = 0; i < logosCount; i++) {
-      width += logos[i].offsetWidth;
-      // Suma el gap manualmente si lo necesitas (por ejemplo, 48px si gap: 3rem)
-      width += 48;
-    }
-    originalWidth = width;
+    trackWidth = track.scrollWidth;
+    halfWidth = trackWidth / 2;
   }
   window.addEventListener('resize', setWidths);
-  window.addEventListener('load', () => {
-    setWidths();
-    animateCarousel();
-  });
+  setWidths();
 
   function animateCarousel() {
     position -= 1;
-    if (Math.abs(position) >= originalWidth) {
+    if (Math.abs(position) >= halfWidth) {
       position = 0;
     }
     track.style.transform = `translateX(${position}px)`;
     requestAnimationFrame(animateCarousel);
   }
+  // Espera a que las imágenes carguen para medir bien el ancho
+  window.addEventListener('load', () => {
+    setWidths();
+    animateCarousel();
+  });
 
   // Menú hamburguesa para móvil
   const menuToggle = document.getElementById('menu-toggle');
@@ -794,5 +804,3 @@
   </script>
 </body>
 </html>
-
-
